@@ -1,0 +1,1 @@
+[{"theInterface" : "IHttp", "theClass" : "HttpFacade"}, {"theInterface" : "IParentClass", "theClass" : "ParentClass"}]
