@@ -18,5 +18,6 @@
 	</buildSpec>
 	<natures>
 		<nature>com.salesforce.ide.nature.default</nature>
+		<nature>com.salesforce.ide.nature.online</nature>
 	</natures>
 </projectDescription>

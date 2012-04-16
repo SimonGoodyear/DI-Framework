@@ -11,35 +11,44 @@ public class Container {
 		return getClass(classType.toString().split('=')[1].replace(']',''), condition);
 	}
 		
-	public static object getClass(String className, String condition){
+	public static object getClass(String interfaceName, String condition){
 		
-		if(className.contains('='))
-			className = className.split('=')[1].replace(']','');
+		// If the user passed Interface.class.toString() we need to
+		// split out the interface name from the stringifyed type class		
+		if(interfaceName.contains('='))
+			interfaceName = interfaceName.split('=')[1].replace(']','');
 			
-		string key = className;
+		string key = interfaceName;
 		string typeName;
 		object ret;
 		
+		// Build the key into the map
 		if(condition != null)
 			key += ';' + condition;
 			
+		// Get the name of the concrete class we need
 		if(internalMap.containsKey(key)){
 			typeName = internalMap.get(key);
 		}
-		else if(internalMap.containsKey(className)){
-			typeName = internalMap.get(className);
+		else if(internalMap.containsKey(interfaceName)){
+			typeName = internalMap.get(interfaceName);
 		}
 		
+		// Try and instantiate the class we picked from the map
+		// If there wasn't anything in the map try and instatiate
+		// the vaule passed in as the required interface as someone 
+		// may have passed a class name		
 		if(typeName != null){
 			ret = jsonInstantiate(typeName);
 		} else{
 			try{
-				ret = jsonInstantiate(className);
+				ret = jsonInstantiate(interfaceName);
 			}catch(Exception ex){
 				system.debug('****** something in here ' + ex);
 			}
 		}
 		
+		// Check to see if the new class needs any dependencies filling in
 		if(ret != null && ret instanceof IHasDependencies){
 			Map<string, object> deps = ((IHasDependencies)ret).getDependencies();
 			Map<string, object> newDeps = new Map<string, object>();
